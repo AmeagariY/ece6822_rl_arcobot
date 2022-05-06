@@ -12,7 +12,7 @@ class DQNAgent:
                 load_model=False, model_name="dqn_model.h5",
                 gamma=0.99, learning_rate=0.001,
                 epsilon=1.0, epsilon_decay=0.999,
-                epsilon_min=0.01, batch_size=64, memory_size=2000,
+                epsilon_min=0.05, batch_size=64, memory_size=2000,
                 ):
         
         self.state_size = state_size
@@ -36,13 +36,14 @@ class DQNAgent:
 
         self.model = self.model_build()
 
-    def model_build(self, units=128):
+    def model_build(self, units=512):
         if self.load_model and os.path.exists(self.model_name):
             model = load_model(self.model_name)
         else:
             model = Sequential()
-            model(Input(shape=(self.state_size,)))
-            model.add(Dense(units, input_dim=self.state_size, activation='relu'))
+            #model(Input(shape=(self.state_size,)))
+            model.add(Dense(units, input_dim=self.state_size, activation='sigmoid'))
+            model.add(Dense(units, activation='relu'))
             model.add(Dense(units, activation='relu'))
             model.add(Dense(self.actionsapce_size, activation='linear'))
             model.summary()

@@ -1,7 +1,8 @@
+#%%
 import numpy as np
 
 class QLearningAgent:
-    def __init__(self, statespace_size, actionspace_size, discrete_bins, epsilon=0.99, epsilon_decacy=0.9999, epsilon_min=0.01, alpha=0.1, gamma=0.9):
+    def __init__(self, statespace_size, actionspace_size, discrete_bins, epsilon=0.99, epsilon_decacy=0.999, epsilon_min=0.1, alpha=0.1, gamma=0.9):
         self.Q = np.zeros(discrete_bins+[actionspace_size])
         self.actionspace_size = actionspace_size
         self.epsilon = epsilon
@@ -31,8 +32,10 @@ class QLearningAgent:
     def load_model(self, path):
         self.Q = np.load(path)
 
-def state_discretization(state_pre,statespace_size, range_high, range_low, dicrete_bins):
+def state_discretization(state_pre,statespace_size, range_high, range_low, discrete_bins):
     state_discrete = np.zeros(statespace_size,dtype=int)
     for i in range(statespace_size):
-        state_discrete[i] = int(np.digitize(state_pre[i], np.linspace(range_low[i], range_high[i], dicrete_bins[i])))-1
+        state_discrete[i] = int(np.digitize(state_pre[i], np.linspace(range_low[i], range_high[i], discrete_bins[i]*2-1))//2)
     return state_discrete
+
+
